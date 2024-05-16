@@ -1,0 +1,116 @@
+{% extends "MediaSite/base.html" %}
+{% load i18n static web_site_tags %}
+{% block title %}
+{{ movie.title }}
+{% endblock %}
+
+{% block content %}
+<!-- details -->
+<!---->
+<section class="section details">
+    <!-- details background -->
+    <div class="details__bg" data-bg="{% static 'img/home/project.jpg' %}"></div>
+    <!-- end details background -->
+
+    <!-- details content -->
+    <div class="container">
+        <div class="row">
+            <!-- title -->
+            <div class="col-12">
+                <h1 class="details__title">{{ movie.title }}</h1>
+            </div>
+            <!-- end title -->
+
+            <!-- content -->
+            <div class="col-10">
+                <div class="card card--details card--series">
+                    <div class="row">
+                        <!-- card cover -->
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+                            <div class="card__cover">
+                                <img src="{{ movie.poster.url }}" alt="">
+                                <style>
+                                    .card__cover {
+                                        margin-left:8px;
+                                        margin-top:8px;
+                                    }
+                                </style>
+                            </div>
+                        </div>
+                        <!-- end card cover -->
+
+                        <!-- card content -->
+                        <div class="col-12 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+                            <div class="card__content">
+                                
+
+                                <ul class="card__meta">
+                                    {% if movie.tagline %}
+                                        <li><span>{% trans 'Слоган' %}:</span>{{ movie.tagline }}</li>
+                                    {% endif %}
+                                    <li><span>{% trans 'Жанр' %}:</span>
+                                        {% for item in movie.genres.all %}
+                                        <a href="{{ item.get_absolute_url }}">{{ item.name|title }}</a>
+                                        {% endfor %}
+                                    </li>
+                                    <li><span>{% trans 'Режиссер' %}:</span>
+                                        {% for item in movie.directors.all %}
+                                        <a href="{% url 'director_detail' item.slug 1 %}">{{ item.name|title }}</a>
+                                        {% endfor %}
+                                    </li>
+                                    <li><span>{% trans 'Актёры' %}:</span>
+                                        {% for item in movie.actors.all %}
+                                        <a href="{{ item.get_absolute_url  }}">{{ item.name|title }}</a>
+                                        {% endfor %}
+                                    </li>
+                                    <li><span>{% trans 'Рейтинг Кинопоиск' %}:</span>★ {{ movie.kinopoisk_rating }}</li>
+                                    <li><span>{% trans 'Премьера в мире' %}:</span> {{ movie.world_premiere }}</li>
+                                    <li><span>{% trans 'Продолжительность' %}:</span> {{ movie.running_time}} мин.</li>
+                                    <li><span>{% trans 'Страна' %}:</span>{{ movie.country }}</li>
+                                    {% if movie.budget %}
+                                        <li><span>{% trans 'Бюджет' %}:</span>$ {{ movie.budget|correct_num }} </li>
+                                    {% endif %}
+                                    {% if movie.fess_in_world %}
+                                        <li><span>{% trans 'Кассовые сборы в мире' %}:</span>$ {{ movie.fess_in_world|correct_num }}</li>
+                                    {% endif %}
+                                </ul>
+
+                                <div class="card__description card__description--details">
+                                    {{ movie.description|safe }}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card content -->
+                    </div>
+                </div>
+            </div>
+            <!-- end content -->
+
+            <!-- player -->
+            <div class="col-12 col-xl-12">
+                <div data-kinopoisk="{{ movie.kinopoisk_id }}" id="kinobd"></div>
+                <script src="https://kinobd.net/js/player_.js"></script>
+                <style>
+                    .col-xl-12{
+                        border-radius:15px;
+                    }
+                </style>
+            </div>
+            <!-- end player -->
+
+            <div class="col-12">
+                <div class="details__wrap"> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end details content -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-xl-8">
+        </div>
+    </div>
+</section>
+
+{% endblock %}

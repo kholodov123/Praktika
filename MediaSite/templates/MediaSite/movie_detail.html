@@ -1,0 +1,331 @@
+{% extends "MediaSite/base.html" %}
+{% load i18n static web_site_tags recaptcha3  social_share cache %}
+{% block title %}
+{{ movie.title }}
+{% endblock %}
+
+{% block content %}
+<!-- details -->
+<!---->
+<section class="section details">
+
+    <!-- details content -->
+    <div class="container">
+        <div class="row">
+            <!-- title -->
+            <div class="col-12">
+                <h1 class="details__title">{{ movie.title }}</h1>
+            </div>
+            <!-- end title -->
+
+            <!-- content -->
+            <div class="col-10">
+                <div class="card card--details card--series">
+                    <div class="row">
+                        <!-- card cover -->
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+                            <div class="card__cover_1">
+                                <img src="{{ movie.poster.url }}" alt="">
+                            </div>
+                        </div>
+                        <!-- end card cover -->
+                        <style>
+                            .card__cover_1{
+                                padding-left: 0px;
+                            }
+                        </style>
+                        <!-- card content -->
+                        <div class="col-12 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+                            <div class="card__content">
+                                <div class="card__wrap">
+                                    <span class="card__rate"><i class="icon ion-ios-star"></i>{% get_movie_rating movie.id %}</span>
+
+                                    <ul class="card__list">
+                                        <li>{{ movie.category }}</li>
+                                    </ul>
+                                </div>
+
+                                <ul class="card__meta">
+                                    {% if movie.tagline %}
+                                        <li><span>{% trans 'Слоган' %}:</span>{{ movie.tagline }}</li>
+                                    {% endif %}
+                                    <li><span>{% trans 'Жанр' %}:</span>
+                                        {% for item in movie.genres.all %}
+                                        <a href="{{ item.get_absolute_url }}">{{ item.name|title }}</a>
+                                        {% endfor %}
+                                    </li>
+                                    <li><span>{% trans 'Режиссер' %}:</span>
+                                        {% for item in movie.directors.all %}
+                                        <a href="{% url 'director_detail' item.slug 1 %}">{{ item.name|title }}</a>
+                                        {% endfor %}
+                                    </li>
+                                    <li><span>{% trans 'Актёры' %}:</span>
+                                        {% for item in movie.actors.all %}
+                                        <a href="{{ item.get_absolute_url  }}">{{ item.name|title }}</a>
+                                        {% endfor %}
+                                    </li>
+                                    <li><span>{% trans 'Рейтинг Кинопоиск' %}:</span>★ {{ movie.kinopoisk_rating }}</li>
+                                    <li><span>{% trans 'Премьера в мире' %}:</span> {{ movie.world_premiere }}</li>
+                                    <li><span>{% trans 'Продолжительность' %}:</span> {{ movie.running_time}} мин.</li>
+                                    <li><span>{% trans 'Страна' %}:</span>{{ movie.country }}</li>
+                                    {% if movie.budget %}
+                                        <li><span>{% trans 'Бюджет' %}:</span>$ {{ movie.budget|correct_num }} </li>
+                                    {% endif %}
+                                    {% if movie.fess_in_world %}
+                                        <li><span>{% trans 'Кассовые сборы в мире' %}:</span>$ {{ movie.fess_in_world|correct_num }}</li>
+                                    {% endif %}
+                                </ul>
+
+                                <div class="card__description card__description--details">
+                                    {{ movie.description|safe }}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card content -->
+                    </div>
+                </div>
+            </div>
+            <!-- end content -->
+
+            <!-- player -->
+            <div class="col-12 col-xl-12">
+                <div data-kinopoisk="{{ movie.kinopoisk_id }}" id="kinobd"></div>
+                <script src="https://kinobd.net/js/player_.js"></script>
+            </div>
+            <!-- end player -->
+
+            <div class="col-12">
+                <div class="details__wrap">
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end details content -->
+</section>
+<!-- end details -->
+
+
+<!-- content -->
+<section class="content">
+    <div class="content__head">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- content title -->
+                    <h2 class="content__title">Discover</h2>
+                    <!-- end content title -->
+
+                    <!-- content tabs nav -->
+                    <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1"
+                               aria-selected="false">{% trans 'Отзывы' %}</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2"
+                               aria-selected="false">{% trans 'Кадры с фильма' %}</a>
+                        </li>
+                    </ul>
+                    <!-- end content tabs nav -->
+
+                    <!-- content mobile tabs nav -->
+                    <div class="content__mobile-tabs" id="content__mobile-tabs">
+                        <div class="content__mobile-tabs-btn dropdown-toggle" role="navigation" id="mobile-tabs"
+                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <input type="button" value="Comments">
+                            <span></span>
+                        </div>
+
+                        <div class="content__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
+                            <ul class="nav nav-tabs" role="tablist">
+
+                                <li class="nav-item"><a class="nav-link active" id="1-tab" data-toggle="tab"
+                                                        href="#tab-1"
+                                                        role="tab" aria-controls="tab-1"
+                                                        aria-selected="false">{% trans 'Отзывы' %}</a></li>
+
+                                <li class="nav-item"><a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2"
+                                                        role="tab" aria-controls="tab-2"
+                                                        aria-selected="false">{% trans 'Кадры с фильма' %}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end content mobile tabs nav -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-xl-8">
+                <!-- content tabs -->
+                <div class="tab-content" id="myTabContent">
+
+                    <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+                        <div class="row">
+                            <!-- reviews -->
+                            <div class="col-12">
+                                <div class="comments">
+                                    <ul class="comments__list">
+                                        {% for review in reviews %}
+                                        <li class="comments__item">
+                                            <div class="comments__autor">
+                                                <img class="comments__avatar" src="{% static 'img/user.png' %}" alt="">
+                                                <span class="comments__name">{{ review.name }}</span>
+                                                <span class="comments__time">{{ review.created_at }}</span>
+                                                {% if review.rating %}
+                                                <span class="reviews__rating"><i
+                                                        class="icon ion-ios-star"></i>{{ review.rating }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <p class="reviews__text">{{ review.text }}</p>
+                                            <div class="comments__actions">
+
+                                                <div class="comments__rate">
+                                                    <button type="button">
+                                                        <div data-id="{{ review.id }}" data-type="review"
+                                                             data-action="like" title="Нравится">
+                                                            <i class="icon ion-md-thumbs-up"></i>
+                                                            <span data-count="like">{{ review.votes.likes.count }}</span>
+                                                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                                                        </div>
+                                                    </button>
+                                                    <button type="button">
+                                                        <div data-id="{{ review.id }}" data-type="review"
+                                                             data-action="dislike" title="Не нравится">
+                                                            <span data-count="dislike">{{ review.votes.dislikes.count }}</span>
+                                                            <i class="icon ion-md-thumbs-down"></i>
+                                                            <span class="glyphicon glyphicon-thumbs-down"></span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+
+                                                <a href="#formReview"
+                                                   onclick="addReview('{{ review.name }}', '{{ review.id }}')">
+                                                    <button type="button">
+                                                        <i class="icon ion-ios-share-alt"></i>{% trans 'Ответить' %}
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </li>
+
+                                        {% for answer in review_children %}
+                                            {% if answer.parent_id == review.id %}
+                                                <li class="comments__item comments__item--answer">
+                                                    <div class="comments__autor">
+                                                        <img class="comments__avatar" src="{% static 'img/user.png' %}" alt="">
+                                                        <span class="comments__name">{{ answer.name }}</span>
+                                                        <span class="comments__time">{{ answer.created_at }}</span>
+                                                    </div>
+                                                    <p class="comments__text">{{ answer.text }}</p>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% endfor %}
+
+                                    </ul>
+
+                                    <form action="{% url 'add_review' movie.id %}" method="post"
+                                          class="form form_margin"  id="formReview">
+                                        <input type="hidden" value='' name="parent" id="contactparent">
+                                        {% csrf_token %}
+                                        {% if request.user.is_authenticated %}
+                                            <input type="hidden" name="name" value="{{ request.user.username }}">
+                                            {{ form.text }}
+                                            {{ form.captcha }}
+                                        {% else %}
+                                            {{ form.name }}
+                                            {{ form.text }}
+                                            {{ form.captcha }}
+                                        {% endif %}
+                                        <div class="form__item">
+                                            <div class="form__label"></div>
+                                            <div class="rating rating_set">
+                                                <div class="rating__body">
+                                                    <div class="rating__active"></div>
+                                                    <div class="rating__items">
+                                                        <input type="radio" class="rating__item" value="1"
+                                                               name="rating">
+                                                        <input type="radio" class="rating__item" value="2"
+                                                               name="rating">
+                                                        <input type="radio" class="rating__item" value="3"
+                                                               name="rating">
+                                                        <input type="radio" class="rating__item" value="4"
+                                                               name="rating">
+                                                        <input type="radio" class="rating__item" value="5"
+                                                               name="rating">
+                                                    </div>
+                                                    <div class="rating_value" style="line-height: 0"></div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="form__btn">{% trans 'Отправить' %}</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- end reviews -->
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab">
+                        <!-- project gallery -->
+                        <div class="gallery" itemscope>
+                            <div class="row">
+                                {% for image in movie.movieshots_set.all %}
+                                <!-- gallery item -->
+                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
+                                    <a href="img/gallery/project-1.jpg" itemprop="contentUrl" data-size="1920x1280">
+                                        <img src="{{ image.image.url }}" itemprop="thumbnail"/>
+                                    </a>
+                                    <figcaption itemprop="caption description">{{ image.description }}</figcaption>
+                                </figure>
+                                <!-- end gallery item -->
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- end project gallery -->
+                    </div>
+                </div>
+                <!-- end content tabs -->
+            </div>
+            <!-- sidebar -->
+            <div class="col-12 col-lg-4 col-xl-4">
+                <div class="row">
+                    <!-- section title -->
+                    <div class="col-12">
+                        <h2 class="section__title section__title--sidebar">{% trans 'Вам также может понравится' %}</h2>
+                    </div>
+                    <!-- end section title -->
+                    {% for film in recommended_films %}
+                        <!-- card -->
+                        <div class="col-6 col-sm-4 col-lg-6">
+                            <div class="card">
+                                <div class="card__cover">
+                                    <img src="{{ film.poster.url }}" alt="">
+                                    <a href="{{ film.get_absolute_url }}" class="card__play">
+                                        <i class="icon ion-ios-play"></i>
+                                    </a>
+                                </div>
+                                <div class="card__content">
+                                    <h3 class="card__title"><a href="{{ film.get_absolute_url }}">{{ film.title }}</a></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card -->
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- end sidebar -->
+        </div>
+    </div>
+</section>
+
+{% endblock %}

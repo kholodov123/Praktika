@@ -1,0 +1,96 @@
+{% extends "MediaSite/base.html" %}
+{% block content %}
+
+<style>
+    .title{
+        display: flex;
+        justify-content: center;
+        margin-top:30px;
+        margin-bottom: 30px;
+    }
+    .title h1{
+        color:var(--text-color);
+    }
+    .user-container{
+        width: auto;
+        height:auto;
+        margin-bottom:30px;
+    }
+    .user-box{
+        margin-bottom: 10px;
+    }
+    .user-info a, .add i{
+        color: #fff;
+    }
+    .user-box h3, .shift-box h3, .ticket-box h3{
+        color:#fff;
+        font-size:1.25rem;
+    } 
+    .shift-container{
+        margin-bottom:30px;
+    }
+    .ticket-container{
+        margin-bottom: 30px;
+    }
+    .ticket-info, .shift-info{
+        margin-bottom:10px;
+    }
+    .line{
+        width:100%;
+        color:#fff;
+        height:2px;
+        margin: 15px auto 30px;
+    }
+</style>
+
+<div class="container admin-container">
+    <div class="title">
+        <h1>Список пользователей</h1>
+    </div>
+    <div class="container user-container">
+        {% for user in users %}
+        <div class="user-box">
+            <h3 class="username">{{ forloop.counter }}. {{user.get_username}}</h3>
+            <div class="user-info">
+                <a style="color:#666666">Имя: {{user.first_name}}</a></br>
+                <a style="color:#666666">Фамилия: {{user.last_name}}</a></br>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="add">
+            <i class='bx bx-plus'></i><a href="{% url 'register' %}"> Добавить пользователя</a>
+        </div>
+    </div>
+    <div class="line line-light bg-light"></div>
+    <div class="title">
+        <h1>Проданные билеты</h1>
+    </div>
+    <div class="container ticket-container">
+        {% for Ticket in tickets %}
+        <div class="ticket-box">
+        <h3 class="ticket_number">Билет №{{Ticket.number}}</h3>
+        <div class="ticket-info">
+            <a style="color:#666666">Фильм: {{Ticket.movie}}</a></br>
+            <a style="color:#666666">Зритель: {{Ticket.user}}</a></br>
+            <a style="color:#666666">Статус билета: {{Ticket.status}}</a></br>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="line line-light bg-light"></div>
+    <div class="title">
+        <h1>Смены</h1>
+    </div>
+    <div class="container shift-container">
+        {% for Shift in shifts %}
+        <div class="shift-box">
+            <h3 class="name">{{forloop.counter}}. {{Shift.name}}({{Shift.start_time}}-{{Shift.end_time}})</h3>
+            <div class="shift-info">
+                <a style="color:#666666">Пользователь: {{Shift.user}}</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

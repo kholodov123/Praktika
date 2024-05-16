@@ -1,0 +1,25 @@
+{% extends "MediaSite/base.html" %}
+{% block content %}
+
+<section class="media" id="media">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center color-white mb-5">Выберите категорию</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-md-6 col-sm-12">
+                <a href="catalog/film/1/"><h3 class="text-center">Фильмы</h3></a>
+            </div>
+            <div class="col-xl-4 col-md-6 col-sm-12">
+                <a href="catalog/serial/1/"><h3 class="text-center">Сериалы</h3></a>
+            </div>
+            <div class="col-xl-4 col-md-6 col-sm-12">
+                <a href="catalog/multfilm/1/"><h3 class="text-center">Мультфильмы</h3></a>
+            </div>
+        </div>
+    </div>
+</section>
+    
+{% endblock content %}

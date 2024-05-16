@@ -1,0 +1,97 @@
+{% extends "MediaSite/base.html" %}
+
+{% block content %}
+
+<style>
+    .container-fluid{
+        width:100%;
+        height:100vh;
+        display:flex;
+        margin:auto;
+        justify-content:center;
+        align-items:center;
+    }
+    .wrapper{
+        width:420px;
+        background:transparent;
+        color:#fff;
+        border-radius:15px;
+        padding: 30px 40px;
+    }
+    
+    .wrapper h1{
+        font-size:30px;
+        text-align:center;
+    }
+    
+    .wrapper .input-box{
+        position:relative;
+        width:100%;
+        height:50px;
+        margin:30px 0;
+    }
+    
+    .input-box input{
+        width:100%;
+        height:100%;
+        background:transparent;
+        border:none;
+        outline:none;
+        border:2px solid rgba(255, 255, 255, .2);
+        border-radius:15px;
+        font-size:16px;
+        color:#fff;
+        padding:20px 45px 20px 20px;
+    }
+    
+    .input-box input::placeholder{
+        color:#fff;
+    }
+    
+    .input-box i{
+        position:absolute;
+        right:20px;
+        top:50%;
+        transform: translateY(-50%);
+        font-size:20px;
+    }
+    
+    .wrapper .btn{
+        width:100%;
+        height:45px;
+        background:#02ac70;
+        border:none;
+        outline:none;
+        border-radius:15px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+        cursor:pointer;
+        font-size:16px;
+        color:#fff;
+        font-weight:600;
+    }
+    </style>
+    
+    <div class="container-fluid">
+        <div class="wrapper">
+         <form method="post" action="{% url 'login' %}">
+             {% csrf_token %}
+          <h1 class="lang" key="title_login">Вход в учетную запись</h1>
+         {% if form.errors %}
+            <i class='bx bx-error' style="display:flex; font-size:30px; color:#fff; justify-content:center; padding:10px;"></i>
+            <p class="lang" key="err" style="color:white; display:flex; justify-content:center;text-align:center;">Логин и пароль не совпадают!<br/>Попробуйте ещё раз</p>
+         {% endif %}
+          <div class="input-box">
+              {{form.username}}
+           <i class='bx bxs-user'></i>
+          </div>
+          <div class="input-box">
+              {{form.password}}
+           <i class='bx bxs-lock-alt' ></i>
+          </div>
+           <button type="submit" class="btn">Вход</button>
+           <input type="hidden" name="next" value="{{ next }}" />
+         </form>
+        </div>
+    </div>
+
+{% endblock content %}
