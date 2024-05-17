@@ -19,8 +19,10 @@
             <div class="logo"><a href="/">MediaSite</a></div>
             <ul class="links">
                 {% if user.is_authenticated %}
+                <li><a style="color: var(--text-color);">Вы вошли как "{{user.get_username}}"</a></li>
                 <li><a href="{% url 'logout' %}">Выход</a></li>
                 {% else %}
+                <li><a style="color: var(--text-color);">Вы вошли как Гость</a></li>
                 <li><a href="{% url 'login' %}">Вход</a></li>
                 {% endif %}
             </ul>
@@ -29,8 +31,10 @@
             </div>
             <div class="dropdown_menu">
                 {% if user.is_authenticated %}
+                <li><a style="color: var(--text-color);">Вы вошли как "{{user.get_username}}"</a></li>
                 <li><a href="{% url 'logout' %}">Выход</a></li>
                 {% else %}
+                <li><a style="color: var(--text-color);">Вы вошли как Гость</a></li>
                 <li><a href="{% url 'login' %}">Вход</a></li>
                 {% endif %}
            </div> 

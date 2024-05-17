@@ -1,0 +1,46 @@
+{% extends "MediaSite/base.html" %}
+{% block content %}
+<style>
+    .update-status{
+        display: flex;
+        justify-content: center;
+    }
+    form{
+        margin-top:150px;
+        margin-bottom: 150px;
+        width: 250px;
+    }
+    label{
+        color:#fff;
+        margin-bottom: 10px;
+        font-size:1.30rem;
+    }
+    select{
+        border-radius: 5px;
+        border:none;
+    }
+    button{
+        border:none;
+        border-radius: 5px;
+        background: var(--btn-color);
+        color:#fff;
+    }
+</style>
+
+<div class="container update-status">
+    <form method="post">
+        {% csrf_token %}
+        <label for="new_status">Выберите новый статус:</label>
+        <div class="select-status">
+        <select name="new_status" id="new_status">
+            {% for status in statuses %}
+                <option value="{{ status.id }}">{{ status.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Обновить статус</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

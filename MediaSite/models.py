@@ -198,7 +198,7 @@ class Ticket(models.Model):
     
 class Shift(models.Model):
     name = models.CharField(max_length=15)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)   
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)   
     start_time = models.TimeField(null=True, blank=True)
     end_time = models.TimeField(null=True, blank=True)
 

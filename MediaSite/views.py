@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
@@ -18,7 +19,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 
 from MediaSite.forms import ReviewForm, UserRegisterForm, UserLoginForm
-from MediaSite.models import Movie, Genre, Actor, Rating, Reviews, LikeDislike, Shift, Ticket
+from MediaSite.models import Movie, Genre, Actor, Rating, Reviews, LikeDislike, Shift, Ticket, Status
 
 
 def main(request):
@@ -45,6 +46,19 @@ def adminpage(request):
         return render(request, "MediaSite/administrator.html", {'users':users, 'shifts':shifts, 'tickets':tickets, 'movies':movies})
     except Exception as e:
         return HttpResponseServerError(str(e))
+    
+@staff_member_required
+def update_ticket_status(request, ticket_id):
+    ticket = Ticket.objects.get(pk=ticket_id)
+    if request.method == 'POST':
+        new_status_id = request.POST.get('new_status')
+        new_status = Status.objects.get(pk=new_status_id)
+        ticket.status = new_status
+        ticket.save()
+        return redirect('adminpage')
+
+    statuses = Status.objects.all()
+    return render(request, 'MediaSite/update_ticket_status.html', {'ticket': ticket, 'statuses': statuses})
     
 class MoviesFilter:
 

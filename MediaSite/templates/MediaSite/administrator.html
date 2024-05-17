@@ -52,8 +52,8 @@
         <div class="user-box">
             <h3 class="username">{{ forloop.counter }}. {{user.get_username}}</h3>
             <div class="user-info">
-                <a style="color:#666666">Имя: {{user.first_name}}</a></br>
-                <a style="color:#666666">Фамилия: {{user.last_name}}</a></br>
+                <a style="color:#eee">Имя: {{user.first_name}}</a></br>
+                <a style="color:#eee">Фамилия: {{user.last_name}}</a></br>
             </div>
         </div>
         {% endfor %}
@@ -70,9 +70,16 @@
         <div class="ticket-box">
         <h3 class="ticket_number">Билет №{{Ticket.number}}</h3>
         <div class="ticket-info">
-            <a style="color:#666666">Фильм: {{Ticket.movie}}</a></br>
-            <a style="color:#666666">Зритель: {{Ticket.user}}</a></br>
+            <a style="color:#eee">Фильм: {{Ticket.movie}}</a></br>
+            <a style="color:#eee">Зритель: {{Ticket.user}}</a></br>
+            {% if Ticket.status.name == "Оплачен" %}
+            <a style="color:var(--btn-color)">Статус билета: {{Ticket.status}}</a></br>
+            {% elif Ticket.status.name == "Не оплачен" %}
+            <a style="color:var(--line-color)">Статус билета: {{Ticket.status}}</a></br>
+            {% else %}
             <a style="color:#666666">Статус билета: {{Ticket.status}}</a></br>
+            {% endif %}
+            <a href="{% url 'update_ticket_status' ticket_id=Ticket.id %}" style="text-decoration:underline">Обновить статус</a>
         </div>
         </div>
         {% endfor %}
@@ -86,7 +93,7 @@
         <div class="shift-box">
             <h3 class="name">{{forloop.counter}}. {{Shift.name}}({{Shift.start_time}}-{{Shift.end_time}})</h3>
             <div class="shift-info">
-                <a style="color:#666666">Пользователь: {{Shift.user}}</a>
+                <a style="color:#eee">Сотрудник: {{Shift.user}}</a>
             </div>
         </div>
         {% endfor %}
