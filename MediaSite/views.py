@@ -19,7 +19,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 
 from MediaSite.forms import ReviewForm, UserRegisterForm, UserLoginForm
-from MediaSite.models import Movie, Genre, Actor, Rating, Reviews, LikeDislike, Shift, Ticket, Status
+from MediaSite.models import Movie, Genre, Actor, Rating, Reviews, LikeDislike, Shift, Ticket, Status, Cart
 
 
 def main(request):
@@ -59,6 +59,36 @@ def update_ticket_status(request, ticket_id):
 
     statuses = Status.objects.all()
     return render(request, 'MediaSite/update_ticket_status.html', {'ticket': ticket, 'statuses': statuses})
+
+def buy_ticket(request):
+    if request.method == 'POST':
+        movie_id = request.POST.get('movie')
+        status_id = request.POST.get('status')
+        user = request.user
+
+        movie = Movie.objects.get(pk=movie_id)
+        status = Status.objects.get(pk=status_id)
+
+        cart, created = Cart.objects.get_or_create(user=user)
+
+        ticket = Ticket(movie=movie, cart=cart, status=status)
+        ticket.save()
+
+        cart.tickets.add(ticket)
+        cart.save()
+
+        return redirect('home')
+
+    movies = Movie.objects.all()
+    statuses = Status.objects.all()
+    return render(request, 'MediaSite/buy_ticket.html', {'movies': movies, 'statuses': statuses})
+
+def view_cart(request):
+    user = request.user
+    cart, created = Cart.objects.get_or_create(user=user)
+    tickets = cart.tickets.all()
+
+    return render(request, 'MediaSite/cart.html', {'tickets': tickets})
     
 class MoviesFilter:
 

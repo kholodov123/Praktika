@@ -20,6 +20,8 @@
             <ul class="links">
                 {% if user.is_authenticated %}
                 <li><a style="color: var(--text-color);">Вы вошли как "{{user.get_username}}"</a></li>
+                <li><a href="{% url 'buy_ticket' %}" style="color: var(--text-color);">Купить билет</a></li>
+                <li><a href="{% url 'view_cart' %}" style="color: var(--text-color);">Ваша корзина</a></li>
                 <li><a href="{% url 'logout' %}">Выход</a></li>
                 {% else %}
                 <li><a style="color: var(--text-color);">Вы вошли как Гость</a></li>
@@ -29,9 +31,11 @@
             <div class="toggle_btn">
                 <i class='fa-solid fa-bars' style="color:#fff;"></i>
             </div>
-            <div class="dropdown_menu">
+            <div class="dropdown_menu" style="z-index:1000;">
                 {% if user.is_authenticated %}
                 <li><a style="color: var(--text-color);">Вы вошли как "{{user.get_username}}"</a></li>
+                <li><a href="{% url 'buy_ticket' %}" style="color: var(--text-color);">Купить билет</a></li>
+                <li><a href="{% url 'view_cart' %}" style="color: var(--text-color);">Ваша корзина</a></li>
                 <li><a href="{% url 'logout' %}">Выход</a></li>
                 {% else %}
                 <li><a style="color: var(--text-color);">Вы вошли как Гость</a></li>

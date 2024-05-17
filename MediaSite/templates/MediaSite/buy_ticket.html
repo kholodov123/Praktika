@@ -1,0 +1,67 @@
+{% extends "MediaSite/base.html" %}
+{% block content %}
+
+<style>
+    .ticket-container{
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .ticket-box{
+        background: var(--second-color);
+        width:auto;
+        height: auto;
+        border: 2px solid #fff;
+        border-radius: 15px;
+        padding: 30px;
+    }
+    form label{
+        color:#fff;
+        margin-bottom: 10px;
+    }
+    form select{
+        border: none;
+        border-radius: 5px;
+        margin-left: 10px;
+    }
+    .btn-buy{
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .btn-buy button{
+        border: none;
+        border-radius: 5px;
+        background:var(--btn-color);
+        color:#fff;
+        padding:8px;
+    }
+</style>
+
+<div class="container ticket-container">
+    <div class="ticket-box">
+        <form method="post">
+            {% csrf_token %}
+            <label for="movie">Выберите фильм:</label>
+            <select name="movie" id="movie">
+                {% for movie in movies %}
+                    <option value="{{ movie.id }}">{{ movie.title }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="status">Выберите статус билета:</label>
+            <select name="status" id="status">
+                {% for status in statuses %}
+                    <option value="{{ status.id }}">{{ status.name }}</option>
+                {% endfor %}
+            </select><br>
+
+            <div class="btn-buy">
+                <button type="submit">Купить билет</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

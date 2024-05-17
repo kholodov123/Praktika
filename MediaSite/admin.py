@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from modeltranslation.admin import TranslationAdmin, TabbedTranslationAdmin 
 
-from .models import Actor, Category, Movie, Genre, Reviews, Rating, MovieShots, LikeDislike, Ticket, Shift, Status
+from .models import Actor, Category, Movie, Genre, Reviews, Rating, MovieShots, LikeDislike, Ticket, Shift, Status, Cart
 
 
 class ReviewInline(admin.TabularInline):
@@ -101,11 +101,11 @@ class RatingAdmin(admin.ModelAdmin):
 class LikeAdmin(admin.ModelAdmin):
     list_display = ('user_ip', 'content_object', 'object_id')
 
-admin.site.register([Status])   
+admin.site.register([Status, Cart])   
 
 @admin.register(Ticket)    
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ('number', 'movie', 'user', 'status')
+    list_display = ('number', 'movie', 'cart', 'status')
 
 @admin.register(Shift)
 class ShiftAdmin(admin.ModelAdmin):

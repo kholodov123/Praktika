@@ -171,7 +171,7 @@ class LikeDislike(models.Model):
 
     class Meta:
         verbose_name = "Лайк & Дизлайк"
-        verbose_name_plural = "Лайки & Дизлайки"
+        verbose_name_plural = "Лайки & Дизлайки"       
 
 class Status(models.Model):
     name = models.CharField(max_length=15)
@@ -183,10 +183,17 @@ class Status(models.Model):
         verbose_name = "Статус"
         verbose_name_plural = "Статусы"    
 
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    tickets = models.ManyToManyField('Ticket', related_name='carts')
+
+    def __str__(self):
+        return f"Cart for {self.user.username}"
+
 class Ticket(models.Model):
     number = models.IntegerField(default=0)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)     
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, default=0)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
@@ -194,7 +201,7 @@ class Ticket(models.Model):
     
     class Meta: 
         verbose_name = "Билет"
-        verbose_name_plural = "Билеты"
+        verbose_name_plural = "Билеты"      
     
 class Shift(models.Model):
     name = models.CharField(max_length=15)

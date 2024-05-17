@@ -1,0 +1,66 @@
+{% extends "MediaSite/base.html" %}
+{% block content %}
+
+<style>
+    .cart-container{
+        height:100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .cart{
+        background: var(--second-color);
+        width: auto;
+        height:auto;
+        border: 2px solid #fff;
+        border-radius: 15px;
+    }
+    .title{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top:15px;
+    }
+    .title h1{
+        color: #fff;
+    }
+    .info{
+        height:auto;
+        margin-bottom:25px;
+    }
+    .info li{
+        color:#fff;
+        margin-bottom:10px;
+        font-size:1.25rem;
+    }
+    .buy-another{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .buy-another a{
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .title, .info{
+        padding: 30px;
+    }
+</style>
+
+<div class="container cart-container">
+    <div class="cart">
+        <div class="title">
+            <h1>Ваша корзина</h1>
+        </div>
+        <div class="info">
+            {% for ticket in tickets %}
+                <li class="text-center">Билет №{{ forloop.counter }} - {{ ticket.movie.title }} - Статус: {{ ticket.status }}</li>
+            {% endfor %}
+            <div class="buy-another">
+                <li><a href="{% url 'buy_ticket' %}">Купить билет</a></li>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
