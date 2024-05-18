@@ -13,10 +13,10 @@
     <!-- end details background -->
 
     <!-- details content -->
-    <div class="container">
-        <div class="row">
+    <div class="container" style="width:100%">
+        <div class="row" style="display: flex; align-items: center; justify-content: center; width:auto;">
             <!-- title -->
-            <div class="col-12">
+            <div class="col-12" style="display: flex; justify-content: center;">
                 <h1 class="details__title">{{ movie.title }}</h1>
             </div>
             <!-- end title -->
@@ -27,21 +27,15 @@
                     <div class="row">
                         <!-- card cover -->
                         <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
-                            <div class="card__cover">
-                                <img src="{{ movie.poster.url }}" alt="">
-                                <style>
-                                    .card__cover {
-                                        margin-left:8px;
-                                        margin-top:8px;
-                                    }
-                                </style>
+                            <div class="card__cover" style="border-radius: 15px;">
+                                <img src="{{ movie.poster.url }}" style="border-radius: 15px;" alt="">
                             </div>
                         </div>
                         <!-- end card cover -->
 
                         <!-- card content -->
                         <div class="col-12 col-sm-8 col-md-8 col-lg-9 col-xl-9">
-                            <div class="card__content">
+                            <div class="card__content" style="border-top-right-radius: 15px;">
                                 
 
                                 <ul class="card__meta">

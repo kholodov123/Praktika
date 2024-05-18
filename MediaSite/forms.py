@@ -19,10 +19,11 @@ class ReviewForm(forms.ModelForm):
 class UserRegisterForm(UserCreationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={'class': "sign__input", 'placeholder': 'Логин'}))
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': "sign__input", 'placeholder': 'Эл. почта'}))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': "sign__input", 'placeholder': 'Пароль'}))
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': "sign__input", 'placeholder': 'Подтвердите пароль'}))
+    is_staff = forms.BooleanField(required=False)
+    is_superuser = forms.BooleanField(required=False)
 
 
 class UserLoginForm(AuthenticationForm):

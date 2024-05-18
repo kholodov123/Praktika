@@ -189,6 +189,10 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"Cart for {self.user.username}"
+    
+    class Meta:
+        verbose_name = "Корзина"
+        verbose_name_plural = "Корзины"
 
 class Ticket(models.Model):
     number = models.IntegerField(default=0)

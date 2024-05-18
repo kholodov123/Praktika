@@ -56,27 +56,6 @@
     font-size:20px;
 }
 
-.wrapper .remember-forgot{
-    display:flex;
-    justify-content:space-between;
-    font-size: 14.5px;
-    margin:-15px 0 15px;
-}
-
-.remember-forgot label input{
-    accent-color: #fff;
-    margin-right:3px;
-}
-
-.remember-forgot a{
-    color:#fff;
-    text-decoration: none;
-}
-
-.remember-forgot a:hover{
-    text-decoration:underline;
-}
-
 .wrapper .btn{
     width:100%;
     height:45px;
@@ -90,47 +69,38 @@
     color:#fff;
     font-weight:600;
 }
-
-.wrapper .register-link{
-    font-size: 14.5px;
-    text-align:center;
-    margin:20px 0 15px;
+.superuser{
+    margin-bottom: 30px;
 }
-
-.register-link p a{
-    color:#fff;
-    text-decoration:none;
-    font-weight:600;
-}
-
-.register-link p a:hover{
-    text-decoration:underline;
+.staff label input, .superuser label input{
+    accent-color: var(--btn-color);
 }
 </style>
 
 <div class="container-fluid">
-
     <div class="wrapper">
-		<form method="post">
-			{% csrf_token %}
-		<h1>Добавление пользователя</h1>
-		<div class="input-box">
-			<input class="text" type="text" name="username" placeholder="Логин" required=""><i class='bx bxs-user'></i>
-		</div>
-		<div class="input-box">
-			<input class="text email" type="email" name="email" placeholder="Эл. почта" required=""><i class='bx bx-envelope'></i>
-		</div>
-		<div class="input-box">
-			<input class="text" type="password" name="password1" placeholder="Пароль" required=""><i class='bx bx-lock-alt'></i>
-		</div>
-		<div class="input-box">
-			<input class="text w3lpass" type="password" name="password2" placeholder="Подтвердите пароль" required=""><i class='bx bx-check-circle' ></i>
-		</div>
-			<button type="submit" class="btn">Добавить</button>
-       <input type="hidden" name="next" value="{{ next }}" />
-		</form>
-	</div>
-
+        <form method="post">
+            {% csrf_token %}
+            <h1>Добавление пользователя</h1>
+            <div class="input-box">
+                <input class="text" type="text" name="username" placeholder="Логин" title="Логин должен содержать минимум одну букву или цифру" required=""><i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input class="text" type="password" name="password1" placeholder="Пароль" title="Пароль должен содержать минимум восемь цифр и одну букву" required=""><i class='bx bx-lock-alt'></i>
+            </div>
+            <div class="input-box">
+                <input class="text w3lpass" type="password" name="password2" placeholder="Подтвердите пароль" title="Повторите введённый ранее пароль"><i class='bx bx-check-circle' ></i>
+            </div>
+            <div class="staff">
+                <label><input type="checkbox" name="is_staff" title="Присвоение пользователю статуса 'Персонал'"> Персонал</label>
+            </div>
+            <div class="superuser">
+                <label><input type="checkbox" name="is_superuser" title="Присвоение пользователю статуса 'Суперпользователь'"> Суперпользователь</label>
+            </div>
+            <button type="submit" class="btn">Добавить</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
 </div>
 
 {% endblock content %}

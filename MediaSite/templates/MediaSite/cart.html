@@ -26,17 +26,19 @@
     }
     .info{
         height:auto;
-        margin-bottom:25px;
     }
     .info li{
         color:#fff;
-        margin-bottom:10px;
         font-size:1.25rem;
+        background: #666;
+        border-radius: 5px;
+        margin:10px 0;
     }
     .buy-another{
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 10px;
     }
     .buy-another a{
         text-decoration: underline;
@@ -54,12 +56,12 @@
         </div>
         <div class="info">
             {% for ticket in tickets %}
-                <li class="text-center">Билет №{{ forloop.counter }} - {{ ticket.movie.title }} - Статус: {{ ticket.status }}</li>
+                <li class="text-center">Билет №{{ forloop.counter }} - {{ ticket.movie.title }} - Продолжительность: {{ ticket.movie.running_time }} мин. - Статус: {{ ticket.status }}</li>
             {% endfor %}
+            </div>
             <div class="buy-another">
                 <li><a href="{% url 'buy_ticket' %}">Купить билет</a></li>
             </div>
-        </div>
     </div>
 </div>
 

@@ -1,7 +1,10 @@
 import json
 import logging
 
+from django.contrib.auth.decorators import user_passes_test
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth import login, logout
+from django.contrib.auth.models import Group
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -89,6 +92,13 @@ def view_cart(request):
     tickets = cart.tickets.all()
 
     return render(request, 'MediaSite/cart.html', {'tickets': tickets})
+
+def superuser_required(function):
+    def wrap(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            raise PermissionDenied
+        return function(request, *args, **kwargs)
+    return wrap
     
 class MoviesFilter:
 
@@ -269,7 +279,6 @@ class FilterMoviesView(MoviesFilter, ListView):
         context["year"] = f"country={self.request.GET.get('country')}&"
         return context
 
-
 class UserRegisterView(CreateView):
     form_class = UserRegisterForm
     template_name = 'MediaSite/registration.html'
@@ -277,6 +286,15 @@ class UserRegisterView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
+
+        if form.cleaned_data.get('is_staff'):
+            user.is_staff = True
+
+        if form.cleaned_data.get('is_superuser'):
+            user.is_superuser = True
+
+        user.save()
+
         login(self.request, user)
         return redirect('/')
 
