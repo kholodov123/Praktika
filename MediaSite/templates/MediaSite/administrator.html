@@ -148,7 +148,6 @@
         <h3 class="ticket_number">Билет №{{forloop.counter}}</h3>
         <div class="ticket-info">
             <a style="color:#eee">Фильм: {{Ticket.movie}}</a></br>
-            <a style="color:#eee">Зритель: {{Ticket.user}}</a></br>
             {% if Ticket.status.name == "Оплачен" %}
             <a style="color:var(--btn-color)">Статус билета: {{Ticket.status}}</a></br>
             {% elif Ticket.status.name == "Не оплачен" %}
