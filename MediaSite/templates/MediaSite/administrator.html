@@ -1,6 +1,8 @@
 {% extends "MediaSite/base.html" %}
 {% block content %}
 
+{% csrf_token %}
+
 <style>
     .title{
         display: flex;
@@ -12,11 +14,12 @@
         color:var(--text-color);
     }
     .user-container{
-        width: auto;
-        height:auto;
-        margin-bottom:30px;
+        display:grid;
+        grid-template-columns:repeat(auto-fit, minmax(220px, auto));
+        gap: 1.5rem;
     }
     .user-box{
+        position:relative;
         margin-bottom: 10px;
     }
     .user-info a, .add i{
@@ -25,15 +28,30 @@
     .user-box h3, .shift-box h3, .ticket-box h3{
         color:#fff;
         font-size:1.25rem;
+    }
+    .ticket-box{
+        border-radius: 15px;
+        border: 1px solid #fff;
+        max-width: 300px;
+        height: auto;
+        padding: 15px;
+    }
+    .add{
+        display: flex;
+        align-items: center;
     } 
     .shift-container{
         margin-bottom:30px;
     }
     .ticket-container{
+        display: grid;
+        grid-template-columns:repeat(auto-fit, minmax(220px, auto));
+        gap: 1.5rem;
         margin-bottom: 30px;
     }
     .ticket-info, .shift-info{
-        margin-bottom:10px;
+        margin-bottom:15px;
+        height:auto;
     }
     .line{
         width:100%;
@@ -41,24 +59,83 @@
         height:2px;
         margin: 15px auto 30px;
     }
+    .user-info .btn-dismiss{
+        background: var(--line-color);
+        color:#fff;
+        border: none;
+        padding:3px;
+        border-radius: 5px;
+    }
+    .ticket-info .btn-update{
+        background: #fff;
+        color:#000;
+        border: none;
+        border-radius: 5px;
+        padding:3px;
+    }
+    form .btn-shift{
+        padding: 3px;
+        border: none;
+        border-radius: 5px;
+        background: var(--btn-color);
+        color: #fff;
+    }
+    form label{
+        color:#fff;
+    }
+    form input{
+        border: none;
+        border-radius: 5px;
+    }
+    .shift-container .add-title a{
+        font-size: 1.25rem;
+        color:#fff;
+        cursor: default;
+    }
+    .shift-container .add-title{
+        margin-bottom: 10px;
+    }
+    .shift-box{
+        margin-bottom: 30px;
+    }
 </style>
 
 <div class="container admin-container">
     <div class="title">
-        <h1>Список пользователей</h1>
+        <h1>Список сотрудников</h1>
     </div>
     <div class="container user-container">
         {% for user in users %}
-        <div class="user-box">
-            <h3 class="username">{{ forloop.counter }}. {{user.get_username}}</h3>
+        <div class="user-box" data-user-id="{{ user.id }}">
+            <h3 class="username">{{ forloop.counter }}. {{ user.get_username }}</h3>
             <div class="user-info">
-                <a style="color:#eee">Имя: {{user.first_name}}</a></br>
-                <a style="color:#eee">Фамилия: {{user.last_name}}</a></br>
+                <a style="color:#eee">Имя: {{ user.first_name }}</a><br>
+                <a style="color:#eee">Фамилия: {{ user.last_name }}</a><br>
+                <button class="btn-dismiss" title="Удаление пользователя из ИC">Уволить</button>
             </div>
         </div>
         {% endfor %}
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+        $('.btn-dismiss').click(function() {
+            var user_id = $(this).closest('.user-box').data('user-id');
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+            $.ajax({
+                url: '/delete_user/' + user_id + '/',
+                type: 'POST',
+                headers: { "X-CSRFToken": csrftoken },
+                success: function(data) {
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+        </script>
         <div class="add">
-            <i class='bx bx-plus'></i><a href="{% url 'register' %}"> Добавить пользователя</a>
+            <i class='bx bx-plus'></i><a href="{% url 'register' %}" title="Добавление нового пользователя или сотрудника"> Добавить пользователя</a>
         </div>
     </div>
     <div class="line line-light bg-light"></div>
@@ -79,7 +156,7 @@
             {% else %}
             <a style="color:#666666">Статус билета: {{Ticket.status}}</a></br>
             {% endif %}
-            <a href="{% url 'update_ticket_status' ticket_id=Ticket.id %}" style="text-decoration:underline">Обновить статус</a>
+            <a href="{% url 'update_ticket_status' ticket_id=Ticket.id %}"><button class="btn-update" title="Изменение статуса билета(Оплачен/Не оплачен)">Обновить статус</button></a>
         </div>
         </div>
         {% endfor %}
@@ -91,12 +168,21 @@
     <div class="container shift-container">
         {% for Shift in shifts %}
         <div class="shift-box">
-            <h3 class="name">{{forloop.counter}}. {{Shift.name}}({{Shift.start_time}}-{{Shift.end_time}})</h3>
+            <h3 class="name">{{ forloop.counter }}. {{ Shift.name }} ({{ Shift.start_time }}-{{ Shift.end_time }})</h3>
             <div class="shift-info">
-                <a style="color:#eee">Сотрудник: {{Shift.user}}</a>
+                <a style="color:#eee">Сотрудник: {{ Shift.user }}</a>
             </div>
         </div>
         {% endfor %}
+        <div class="add-title">
+            <a>Добавление смены</a>
+        </div>
+    
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-shift">Добавить смену</button>
+        </form>
     </div>
 </div>
 

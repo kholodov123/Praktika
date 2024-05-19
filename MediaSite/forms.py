@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
-from MediaSite.models import Reviews
+from MediaSite.models import *
 
 
 class ReviewForm(forms.ModelForm):
@@ -23,6 +23,7 @@ class UserRegisterForm(UserCreationForm):
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': "sign__input", 'placeholder': 'Подтвердите пароль'}))
     is_staff = forms.BooleanField(required=False)
+    is_cashier = forms.BooleanField(required=False)
     is_superuser = forms.BooleanField(required=False)
 
 
@@ -55,3 +56,8 @@ class SetNewPasswordForm(SetPasswordForm):
         widget=forms.PasswordInput(
             attrs={'autocomplete': 'new-password', 'class': 'sign__input', 'placeholder': ('Repeat password')}),
     )
+
+class ShiftForm(forms.ModelForm):
+    class Meta:
+        model = Shift
+        fields = ['name', 'start_time', 'end_time', 'user']    

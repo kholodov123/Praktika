@@ -208,10 +208,10 @@ class Ticket(models.Model):
         verbose_name_plural = "Билеты"      
     
 class Shift(models.Model):
-    name = models.CharField(max_length=15)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)   
-    start_time = models.TimeField(null=True, blank=True)
-    end_time = models.TimeField(null=True, blank=True)
+    name = models.CharField(max_length=15, verbose_name="Название")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=0, verbose_name="Сотрудник")   
+    start_time = models.TimeField(null=True, blank=True, verbose_name="Начало")
+    end_time = models.TimeField(null=True, blank=True, verbose_name="Конец")
 
     def __str__(self):
         return self.name 

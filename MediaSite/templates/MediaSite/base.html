@@ -16,7 +16,7 @@
 
     <header>
         <div class="navbar">
-            <div class="logo"><a href="/">MediaSite</a></div>
+            <div class="logo"><a href="/" title="На главную страницу">MediaSite</a></div>
             <ul class="links">
                 {% if user.is_authenticated %}
                 <li><a style="color: var(--text-color);">Вы вошли как "{{user.get_username}}"</a></li>
@@ -48,6 +48,34 @@
     {% block content %}
     {% endblock content %}
     
+    <style>
+        .modal {
+            position: fixed;
+            width: 100%;
+            height: 460px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .closeButton {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .footer-col button{
+            background: none;
+            border:none;
+            cursor: pointer;
+            color:#fff;
+        }
+    </style>
 
     <footer class="footer">
         <div class="container">
@@ -60,20 +88,19 @@
                         </ul>
                 </div>
                 <div class="footer-col">
-                    <h4>Поддержка</h4>
+                    <h4>Адреса</h4>
                         <ul>
-                            <li><a href="#">Помощь</a></li>
-                            <li><a href="#">Условия использования</a></li>
+                            <button id="showMapBtn">Показать карту</button>
                         </ul>
                 </div>
                 <div class="footer-col">
-                    <h4>Для персонала</h4>
+                    <h4>Для сотрудников</h4>
                         <ul>
                             <li><a href="{% url 'adminpage' %}">Окно администратора</a></li>
                         </ul>
                 </div>
                 <div class="footer-col">
-                    <h4>Наши социальные сети</h4>
+                    <h4>Ссылки</h4>
                         <div class="social-links">
                             <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><i class='bx bxl-youtube'></i></a>
                             <a href="#"><i class='bx bxl-telegram' ></i></a>
@@ -86,4 +113,29 @@
 
 </body>
 <script src="../../../static/js/nav.js"></script>
+<script>
+    document.getElementById('showMapBtn').addEventListener('click', function() {
+        var modal = document.createElement('div');
+        modal.classList.add('modal');
+
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.charset = 'utf-8';
+        script.async = true;
+        script.src = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ae090886ef73c749dd20121e00a1a26feae5efcaf25bb4f2d7c09830286582895&amp;width=460&amp;height=460&amp;lang=ru_RU&amp;scroll=true';
+        modal.appendChild(script);
+
+        document.body.appendChild(modal);
+
+        var closeButton = document.createElement('button');
+        closeButton.textContent = 'Закрыть';
+        closeButton.classList.add('closeButton');
+        document.body.appendChild(closeButton);
+       
+        closeButton.addEventListener('click', function() {
+            modal.remove();
+            closeButton.remove(); 
+        });
+    });
+</script>
 </html>

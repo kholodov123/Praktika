@@ -4,7 +4,7 @@ import logging
 from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import login, logout
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import *
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -18,11 +18,11 @@ from django.http import HttpResponseServerError
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import BaseCreateView
 from django.views.generic.list import MultipleObjectMixin
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.admin.views.decorators import staff_member_required 
 
 
-from MediaSite.forms import ReviewForm, UserRegisterForm, UserLoginForm
-from MediaSite.models import Movie, Genre, Actor, Rating, Reviews, LikeDislike, Shift, Ticket, Status, Cart
+from MediaSite.forms import *
+from MediaSite.models import *
 
 
 def main(request):
@@ -44,9 +44,16 @@ def adminpage(request):
     try:
         users = User.objects.all()
         movies = Movie.objects.all()
-        shifts = Shift.objects.all()
         tickets = Ticket.objects.all()
-        return render(request, "MediaSite/administrator.html", {'users':users, 'shifts':shifts, 'tickets':tickets, 'movies':movies})
+        shifts = Shift.objects.all()
+        form = ShiftForm()
+
+        if request.method == 'POST':
+            form = ShiftForm(request.POST)
+            if form.is_valid():
+                form.save()
+            return redirect('adminpage')
+        return render(request, "MediaSite/administrator.html", {'users':users, 'shifts':shifts, 'tickets':tickets, 'movies':movies, 'form':form})
     except Exception as e:
         return HttpResponseServerError(str(e))
     
@@ -99,6 +106,11 @@ def superuser_required(function):
             raise PermissionDenied
         return function(request, *args, **kwargs)
     return wrap
+
+def delete_user(request, user_id):
+    user = User.objects.get(id=user_id)
+    user.delete()
+    return redirect('adminpage')
     
 class MoviesFilter:
 
@@ -292,6 +304,10 @@ class UserRegisterView(CreateView):
 
         if form.cleaned_data.get('is_superuser'):
             user.is_superuser = True
+
+        if form.cleaned_data.get('is_cashier'):
+            cashier_group = Group.objects.get(name='Cashier')
+            user.groups.add(cashier_group)            
 
         user.save()
 

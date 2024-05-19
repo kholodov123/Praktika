@@ -72,7 +72,7 @@
 .superuser{
     margin-bottom: 30px;
 }
-.staff label input, .superuser label input{
+.staff label input, .superuser label input, .cashier label input{
     accent-color: var(--btn-color);
 }
 </style>
@@ -92,7 +92,10 @@
                 <input class="text w3lpass" type="password" name="password2" placeholder="Подтвердите пароль" title="Повторите введённый ранее пароль"><i class='bx bx-check-circle' ></i>
             </div>
             <div class="staff">
-                <label><input type="checkbox" name="is_staff" title="Присвоение пользователю статуса 'Персонал'"> Персонал</label>
+                <label><input type="checkbox" name="is_staff" title="Присвоение пользователю статуса 'Билетёр'"> Билетёр</label>
+            </div>
+            <div class="cashier">
+                <label><input type="checkbox" name="is_cashier" title="Присвоение пользователю статуса 'Кассир'"> Кассир</label>
             </div>
             <div class="superuser">
                 <label><input type="checkbox" name="is_superuser" title="Присвоение пользователю статуса 'Суперпользователь'"> Суперпользователь</label>

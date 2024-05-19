@@ -20,3 +20,7 @@ URL сервера.
 ```sh
 http://127.0.0.1:8000/
 ```
+Если не прогружаются стили/фото.
+```sh
+python manage.py collectstatic
+```
