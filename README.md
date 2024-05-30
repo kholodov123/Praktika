@@ -8,10 +8,9 @@
 • <code>http://127.0.0.1:8000/</code><br>
 <br>
 <b>Если не прогружаются стили/фото</b><br>
-```sh
-python manage.py collectstatic
-```
-Данные суперпользователя.
+• <code>python manage.py collectstatic</code>
+<br>
+<b>Данные суперпользователя</b>
 ```sh
 Логин: kholodov
 Пароль: 1
