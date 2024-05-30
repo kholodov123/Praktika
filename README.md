@@ -1,26 +1,14 @@
 # Информационная система для автоматизации работы кинотеатра
-Создание venv.
-```sh
-python -m venv venv
-```
-Активация venv.
-```sh
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-venv\Scripts\Activate.ps1
-```
-Установка пакетов.
-```sh
-python -m pip install -r requirements.txt
-```
-Запуск сервера.
-```sh
-python manage.py runserver
-```
-URL сервера.
-```sh
-http://127.0.0.1:8000/
-```
-Если не прогружаются стили/фото.
+<b>Запуск</b><br>
+• <code>python -m venv venv</code><br>
+• <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code><br>
+• <code>venv\Scripts\Activate.ps1</code><br>
+• <code>python -m pip install -r requirements.txt</code><br>
+• <code>python manage.py runserver</code><br>
+• <code>http://127.0.0.1:8000/</code><br>
+• <code></code><br>
+<br>
+<b>Если не прогружаются стили/фото</b><br>
 ```sh
 python manage.py collectstatic
 ```
